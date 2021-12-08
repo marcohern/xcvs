@@ -1,0 +1,1 @@
+{"version":1,"defects":{"Warning":6,"Marcohern\\Xcvs\\Tests\\XcvsTest::test_load":4,"Marcohern\\Xcvs\\Tests\\XcvsTest::test_read":3},"times":{"Warning":0.002,"Marcohern\\Xcvs\\Tests\\XcvsTest::test_load":0.003,"Marcohern\\Xcvs\\Tests\\XcvsTest::test_read":0,"Marcohern\\Xcvs\\Tests\\XcvsTest::test_read_w_cols":0}}
