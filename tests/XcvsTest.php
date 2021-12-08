@@ -39,21 +39,21 @@ class XcvsTest extends TestCase {
   }
 
   public function test_read() {
-    $this->xcvs->open("tests/Samples/file.csv");
+    $this->xcvs->open("tests/Samples/worldcities.csv");
     $cols = $this->xcvs->columns();
     $record = $this->xcvs->read();
-    $this->assertEquals($cols[0], 'Name');
-    $this->assertEquals($record['Name'], 'Marco Hernandez');
+    $this->assertEquals($cols[0], 'city');
+    $this->assertEquals($record['city'], 'Tokyo');
     $this->xcvs->close();
   }
 
   public function test_read_w_cols() {
-    $this->xcvs->open("tests/Samples/file.csv");
+    $this->xcvs->open("tests/Samples/worldcities.csv");
     $this->xcvs->read();
     $cols = $this->xcvs->columns();
     $record = $this->xcvs->read();
-    $this->assertEquals($cols[0], 'Name');
-    $this->assertEquals($record['Name'], 'Marco Hernandez');
+    $this->assertEquals($cols[0], 'city');
+    $this->assertEquals($record['city'], 'Tokyo');
     $this->xcvs->close();
   }
 }
