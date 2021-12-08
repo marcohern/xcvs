@@ -2,19 +2,24 @@
 
 namespace Marcohern\Xcvs;
 
+use Marcohern\Xcvs\Exceptions\CsvOpenException;
+use Marcohern\Xcvs\Exceptions\CsvCloseException;
+
 class Xcvs {
   private $handle;
-
-  public $columns = null;
+  public $columns;
 
   public function open(string $filepath): void
   {
     $this->columns = null;
     $this->handle = fopen($filepath, "r");
+    if ($this->handle === false) throw new CsvOpenException("Unable to open file '$filepath'.");
   }
 
   public function close(): void {
-    fclose($this->handle);
+    if ($this->handle === null) throw new CsvCloseException("Handle is null, cannot be closed.");
+    $closeSuccess = fclose($this->handle);
+    if ($closeSuccess === false) throw new CsvCloseException("Unable to close file.");
   }
 
   public function read(): array|bool {
