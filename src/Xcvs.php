@@ -10,7 +10,7 @@ class Xcvs {
   private $columns = null;
   private $filepath = null;
 
-  private $columnMap;
+  private $columnMap = null;
 
   public function __construct()
   {
