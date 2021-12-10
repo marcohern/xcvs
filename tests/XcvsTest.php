@@ -55,4 +55,45 @@ class XcvsTest extends TestCase {
     $this->assertEquals($record['Country'],'Japan');
     
   }
+
+  public function test_extract_index() {
+    $this->xcvs->setExtract([
+      'Position' => [
+        '/(\d+\.\d+)\s*,\s*(\d+\.\d+)/',
+        1 => 'X', 2 => 'Y'
+      ]
+    ]);
+    $this->xcvs->setFilePath('tests/Samples/extract.csv');
+    $record = $this->xcvs->read();
+    $this->assertEquals($record['Name'],'John');
+    $this->assertEquals($record['Position'],'(123.456,789.012)');
+    $this->assertEquals($record['X'],'123.456');
+    $this->assertEquals($record['Y'],'789.012');
+    $record = $this->xcvs->read();
+    $this->assertEquals($record['Name'],'Mark');
+    $this->assertEquals($record['Position'],' ( 98.765, 43.210 )');
+    $this->assertEquals($record['X'],'98.765');
+    $this->assertEquals($record['Y'],'43.210');
+    $this->xcvs->close();
+  }
+
+  public function test_extract_named() {
+    $this->xcvs->setExtract([
+      'Position' => [
+        '/(?<X>\d+\.\d+)\s*,\s*(?<Y>\d+\.\d+)/'
+      ]
+    ]);
+    $this->xcvs->setFilePath('tests/Samples/extract.csv');
+    $record = $this->xcvs->read();
+    $this->assertEquals($record['Name'],'John');
+    $this->assertEquals($record['Position'],'(123.456,789.012)');
+    $this->assertEquals($record['X'],'123.456');
+    $this->assertEquals($record['Y'],'789.012');
+    $record = $this->xcvs->read();
+    $this->assertEquals($record['Name'],'Mark');
+    $this->assertEquals($record['Position'],' ( 98.765, 43.210 )');
+    $this->assertEquals($record['X'],'98.765');
+    $this->assertEquals($record['Y'],'43.210');
+    $this->xcvs->close();
+  }
 }

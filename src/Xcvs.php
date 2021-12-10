@@ -9,6 +9,7 @@ class Xcvs {
   private $reader = null;
   private $columns = null;
   private $filepath = null;
+  private $extract = null;
 
   private $columnMap = null;
 
@@ -25,6 +26,11 @@ class Xcvs {
   public function getColumns(): ?array
   {
     return $this->columns;
+  }
+
+  public function setExtract(array $extract): void
+  {
+    $this->extract = $extract;
   }
 
   public function setFilePath(string $filepath): void
@@ -82,15 +88,32 @@ class Xcvs {
     return $map;
   }
 
+  private function extract(array &$record): void
+  {
+    foreach ($this->extract as $col => $extract)
+    {
+      $exp = $extract[0];
+      $m = null;
+      preg_match($exp, $record[$col], $m);
+      foreach ($extract as $expi => $to) {
+        if ($expi === 0) continue;
+        $record[$to] = $m[$expi];
+      }
+      foreach ($m as $i => $v) {
+        if (is_string($i)) $record[$i] = $v;
+      }
+    }
+  }
+
   public function read(): array
   {
-    $this->reader = new XcvsFileReader();
-    
     if (is_null($this->columnMap))
     {
       $this->readFirst();
     }
-    return $this->map($this->reader->read());
+    $mapped = $this->map($this->reader->read());
+    if (!is_null($this->extract)) $this->extract($mapped);
+    return $mapped;
   }
 
   public function close(): void
